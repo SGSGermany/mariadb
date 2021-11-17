@@ -1,0 +1,7 @@
+[client-server]
+socket = /run/mysql/mysql.sock
+
+[mysqld]
+skip-networking
+skip-bind-address
+skip-log-error
