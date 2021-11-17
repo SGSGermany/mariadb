@@ -54,6 +54,21 @@ cmd buildah run "$CONTAINER" -- \
 
 cmd buildah config --volume "/var/log/mysql" "$CONTAINER"
 
+echo + "MYSQL_VERSION=\"\$(buildah run $CONTAINER -- /bin/sh -c 'echo \"\$MARIADB_VERSION\"')\""
+MYSQL_VERSION="$(buildah run "$CONTAINER" -- /bin/sh -c 'echo "$MARIADB_VERSION"')"
+
+cmd buildah config \
+    --annotation org.opencontainers.image.title="MariaDB" \
+    --annotation org.opencontainers.image.description="A MariaDB container with an improved configuration structure." \
+    --annotation org.opencontainers.image.version="$MYSQL_VERSION" \
+    --annotation org.opencontainers.image.url="https://github.com/SGSGermany/mariadb" \
+    --annotation org.opencontainers.image.authors="SGS Serious Gaming & Simulations GmbH" \
+    --annotation org.opencontainers.image.vendor="SGS Serious Gaming & Simulations GmbH" \
+    --annotation org.opencontainers.image.licenses="MIT" \
+    --annotation org.opencontainers.image.base.name="$BASE_IMAGE" \
+    --annotation org.opencontainers.image.base.digest="$(podman image inspect --format '{{.Digest}}' "$BASE_IMAGE")" \
+    "$CONTAINER"
+
 cmd buildah commit "$CONTAINER" "$IMAGE:${TAGS[0]}"
 cmd buildah rm "$CONTAINER"
 
