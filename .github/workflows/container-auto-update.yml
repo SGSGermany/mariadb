@@ -96,7 +96,15 @@ jobs:
       - name: Build 'default' container image
         if: ${{ env.BUILD_ACTION != '' }}
         run: |
-          buildah unshare ./default/build.sh
+          sudo -E ./default/build.sh
+
+      - name: Copy 'default' container image
+        if: ${{ env.BUILD_ACTION != '' }}
+        run: |
+          readarray -t -d' ' TAGS < <(printf '%s' "$DEFAULT_TAGS")
+          for TAG in "${TAGS[@]}"; do
+              sudo podman save "$IMAGE:$TAG" | podman load
+          done
 
       - name: Metadata of 'default' container image
         run: |
@@ -105,7 +113,15 @@ jobs:
       - name: Build 'base' container image
         if: ${{ env.BUILD_ACTION != '' }}
         run: |
-          buildah unshare ./base/build.sh
+          sudo -E ./base/build.sh
+
+      - name: Copy 'base' container image
+        if: ${{ env.BUILD_ACTION != '' }}
+        run: |
+          readarray -t -d' ' TAGS < <(printf '%s' "$BASE_TAGS")
+          for TAG in "${TAGS[@]}"; do
+              sudo podman save "$IMAGE:$TAG" | podman load
+          done
 
       - name: Metadata of 'base' container image
         run: |
