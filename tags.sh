@@ -33,8 +33,8 @@ fi
 # get latest MariaDB version
 git_clone "$MERGE_IMAGE_GIT_REPO" "$MERGE_IMAGE_GIT_REF" "$BUILD_DIR/vendor" "./vendor"
 
-echo + "VERSION=\"\$(sed -ne 's/^ARG MARIADB_VERSION=\(.*\)/\1/p' $(quote "./vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile"))\"" >&2
-VERSION="$(sed -ne 's/^ARG MARIADB_VERSION=\(.*\)/\1/p' "$BUILD_DIR/vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile" || true)"
+echo + "VERSION=\"\$(sed -ne 's/^ARG MARIADB_VERSION=\(.*\)$/\1/p' $(quote "./vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile"))\"" >&2
+VERSION="$(sed -ne 's/^ARG MARIADB_VERSION=\(.*\)$/\1/p' "$BUILD_DIR/vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile" || true)"
 
 if [ -z "$VERSION" ]; then
     echo "Unable to read MariaDB version from './vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile': Version not found" >&2

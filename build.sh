@@ -75,6 +75,9 @@ cmd buildah config \
 echo + "MARIADB_VERSION=\"\$(buildah run $CONTAINER -- /bin/sh -c 'echo \"\$MARIADB_VERSION\"')\"" >&2
 MARIADB_VERSION="$(buildah run "$CONTAINER" -- /bin/sh -c 'echo "$MARIADB_VERSION"')"
 
+echo + "MARIADB_VERSION=\"\$(sed -ne 's/^\([0-9]*:\)\?\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\([+~-].*\)\?$/\2.\3.\4/p' <<< ${MARIADB_VERSION@Q})" >&2
+MARIADB_VERSION="$(sed -ne 's/^\([0-9]*:\)\?\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\([+~-].*\)\?$/\2.\3.\4/p' <<< "$MARIADB_VERSION")"
+
 cmd buildah config \
     --annotation org.opencontainers.image.title="MariaDB" \
     --annotation org.opencontainers.image.description="A MariaDB container with an improved configuration." \
