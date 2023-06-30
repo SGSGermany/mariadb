@@ -60,7 +60,7 @@ cmd buildah config \
     --label org.opencontainers.image.licenses- \
     --label org.opencontainers.image.base.name- \
     --label org.opencontainers.image.ref.name- \
-    --port 3306/tcp- \
+    --port - \
     "$CONTAINER"
 
 cmd buildah config \
