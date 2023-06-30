@@ -64,6 +64,10 @@ cmd buildah config \
     "$CONTAINER"
 
 cmd buildah config \
+    --env MARIADB_AUTO_UPGRADE="1" \
+    "$CONTAINER"
+
+cmd buildah config \
     --volume "/var/log/mysql" \
     --volume "/run/mysql" \
     "$CONTAINER"
