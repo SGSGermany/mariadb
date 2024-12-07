@@ -42,12 +42,12 @@ if [ -z "${VERSION:-}" ]; then
     if [ -z "$VERSION" ]; then
         echo "Unable to read MariaDB version from './vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile': Version not found" >&2
         exit 1
-    elif ! [[ "$VERSION" =~ ^([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)([+~-]|$) ]]; then
+    elif ! [[ "$VERSION" =~ ^([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)([+~-].*)?$ ]]; then
         echo "Unable to read MariaDB version from './vendor/$MERGE_IMAGE_BUD_CONTEXT/Dockerfile': '$VERSION' is no valid version" >&2
         exit 1
     fi
 
-    VERSION="${BASH_REMATCH[2]}.${BASH_REMATCH[3]}.${BASH_REMATCH[4]}"
+    VERSION="${BASH_REMATCH[2]}.${BASH_REMATCH[3]}.${BASH_REMATCH[4]}${BASH_REMATCH[5]}"
 fi
 
 chkupd_image_version "$REGISTRY/$OWNER/$IMAGE:$TAG" "$VERSION" || exit 0
